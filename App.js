@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, Button, FlatList, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, Button, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, Animated } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { Audio } from "expo-av";
@@ -16,11 +16,33 @@ export default function App() {
   const soundRef = useRef(new Audio.Sound());
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const barAnimations = useRef([...Array(5)].map(() => new Animated.Value(1))).current;
+
+  const animateBars = () => {
+    if (!isPlaying) return;
+    const animations = barAnimations.map(bar =>
+      Animated.sequence([
+        Animated.timing(bar, { toValue: Math.random() * 1.5 + 0.5, duration: 300, useNativeDriver: true }),
+        Animated.timing(bar, { toValue: 1, duration: 300, useNativeDriver: true }),
+      ])
+    );
+    Animated.stagger(100, animations).start(() => animateBars());
+  };
+
   useEffect(() => {
     AdMobInterstitial.setAdUnitID(INTERSTITIAL_ID);
     AdMobRewarded.setAdUnitID(REWARDED_ID);
-    return () => { (async () => { try { await soundRef.current.unloadAsync(); } catch {} })(); };
+
+    return () => {
+      (async () => {
+        try { await soundRef.current.unloadAsync(); } catch {}
+      })();
+    };
   }, []);
+
+  useEffect(() => {
+    if (isPlaying) animateBars();
+  }, [isPlaying]);
 
   const pickAudio = async () => {
     try {
@@ -70,10 +92,10 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>TuneVault</Text>
+      <Text style={styles.header}>TuneVault 🎵</Text>
 
       <View style={{ marginVertical: 10 }}>
-        <Button title="Add audio file" onPress={pickAudio} />
+        <Button title="Add Audio File" onPress={pickAudio} />
       </View>
 
       <FlatList
@@ -87,6 +109,21 @@ export default function App() {
         )}
         ListEmptyComponent={<Text style={{ textAlign: "center" }}>No tracks. Add one.</Text>}
       />
+
+      {current !== null && (
+        <View style={styles.waveformContainer}>
+          {barAnimations.map((bar, i) => (
+            <Animated.View
+              key={i}
+              style={[
+                styles.bar,
+                { transform: [{ scaleY: bar }] },
+                isPlaying ? styles.playingBar : styles.pausedBar,
+              ]}
+            />
+          ))}
+        </View>
+      )}
 
       <View style={styles.controls}>
         <Button title={isPlaying ? "Pause" : "Play"} onPress={isPlaying ? pause : resume} disabled={current === null} />
@@ -111,5 +148,22 @@ const styles = StyleSheet.create({
   header: { fontSize: 22, fontWeight: "700", marginBottom: 8 },
   item: { padding: 12, borderBottomWidth: 1, borderColor: "#eee", flexDirection: "row", justifyContent: "space-between" },
   controls: { flexDirection: "row", justifyContent: "space-around", marginVertical: 12 },
-  banner: { alignSelf: "stretch", position: "absolute", bottom: 0, left: 0, right: 0 }
+  banner: { alignSelf: "stretch", position: "absolute", bottom: 0, left: 0, right: 0 },
+  waveformContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 150,
+    height: 40,
+    marginVertical: 10,
+    alignSelf: "center",
+    alignItems: "flex-end",
+  },
+  bar: {
+    width: 10,
+    height: 20,
+    borderRadius: 5,
+    backgroundColor: "#2196F3",
+  },
+  playingBar: { backgroundColor: "#F44336" },
+  pausedBar: { backgroundColor: "#2196F3" },
 });
