@@ -6,7 +6,18 @@
     "sdkVersion": "48.0.0",
     "platforms": ["android"],
     "android": {
-      "package": "com.kenyanjaguar.tunevault"
+      "package": "com.kenyanjaguar.tunevault",
+      "icon": "./assets/icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
     }
   }
 }
