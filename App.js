@@ -5,10 +5,10 @@ import * as FileSystem from "expo-file-system";
 import { Audio } from "expo-av";
 import { AdMobBanner, AdMobInterstitial, AdMobRewarded } from "expo-ads-admob";
 
-const ADMOB_APP_ID = "ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY"; // <- REPLACE
-const BANNER_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB";    // <- REPLACE
-const INTERSTITIAL_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"; // <- REPLACE
-const REWARDED_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/RRRRRRRRRR"; // <- REPLACE
+const ADMOB_APP_ID = "ca-app-pub-7453460048400380~5366908131";
+const BANNER_ID = "ca-app-pub-7453460048400380/9716667941";    
+const INTERSTITIAL_ID = "ca-app-pub-7453460048400380/8358412298"; 
+const REWARDED_ID = "ca-app-pub-7453460048400380/8324243962"; 
 
 export default function App() {
   const [playlist, setPlaylist] = useState([]);
