@@ -6,9 +6,9 @@ import { Audio } from "expo-av";
 import { AdMobBanner, AdMobInterstitial, AdMobRewarded } from "expo-ads-admob";
 import PlayerControls from "../components/PlayerControls";
 
-const BANNER_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB";
-const INTERSTITIAL_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII";
-const REWARDED_ID = "ca-app-pub-XXXXXXXXXXXXXXXX/RRRRRRRRRR";
+const BANNER_ID = "ca-app-pub-7453460048400380/9716667941";
+const INTERSTITIAL_ID = "ca-app-pub-7453460048400380/8358412298";
+const REWARDED_ID = "ca-app-pub-7453460048400380/8324243962";
 
 export default function HomeScreen() {
   const [playlist, setPlaylist] = useState([]);
